@@ -8,37 +8,26 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen extends ScreenAdapter {
-	private int XPositionCharacter1;
-	private int YPositionCharacter1;
-	private int XPositionCharacter2;
-	private int YPositionCharacter2;
-	private int XPositionBulletCharacter1;
-	private int YPositionBulletCharacter1;
-	private int vectorOfBulletCharacter1;
-	private int XPositionBulletCharacter2;
-	private int YPositionBulletCharacter2;
-	private int vectorOfBulletCharacter2;
+	private float XPositionCharacter1;
+	private float YPositionCharacter1;
+	private float XPositionCharacter2;
+	private float YPositionCharacter2;
+	private float XPositionBulletCharacter1;
+	private float YPositionBulletCharacter1;
+	private float vectorOfBulletCharacter1;
+	private float XPositionBulletCharacter2;
+	private float YPositionBulletCharacter2;
+	private float vectorOfBulletCharacter2;
 	private int vectorOfCharacter1 = 1;
 	private int vectorOfCharacter2 = -1;// 1 = right , -1 = left
-	private float vY = 5;
-	private float g = 9.8f;
-	private float v;
 	private boolean checkShootCharacter1 = false;
 	private boolean checkShootCharacter2 = false;
-	private boolean checkJump = false;
-	
 	private ShootingGame shootingGame;
-	
 	private Texture character1RightImg;
-	 
 	private Texture character2RightImg;
-
 	private Texture character1LeftImg;
-	 
 	private Texture character2LeftImg;
-	
 	private Texture dotImg;
-	
 	private Texture backgroundImg;
 	
     public GameScreen(ShootingGame shootingGame) {
@@ -89,18 +78,18 @@ public class GameScreen extends ScreenAdapter {
     
     private void updateCharacter1(float delta) {
         if(Gdx.input.isKeyPressed(Keys.A)){
-        	XPositionCharacter1 -= 5;
+        	XPositionCharacter1 -= 7;
         	vectorOfCharacter1 = -1;
         }
         if(Gdx.input.isKeyPressed(Keys.D)){
-        	XPositionCharacter1 += 5;
+        	XPositionCharacter1 += 7;
         	vectorOfCharacter1 = 1;
         }
         if(Gdx.input.isKeyPressed(Keys.W)){
-        	YPositionCharacter1 += 5;
+        	YPositionCharacter1 += 7;
         }
         if(Gdx.input.isKeyPressed(Keys.S)){
-        	YPositionCharacter1 -= 5;
+        	YPositionCharacter1 -= 7;
         }
         if(Gdx.input.isKeyPressed(Keys.C)){
         	checkShootCharacter1 = true;
@@ -112,18 +101,18 @@ public class GameScreen extends ScreenAdapter {
     
     private void updateCharacter2(float delta) {
         if(Gdx.input.isKeyPressed(Keys.LEFT)){
-        	XPositionCharacter2 -= 5;
+        	XPositionCharacter2 -= 7;
         	vectorOfCharacter2 = -1;
         }
         if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-        	XPositionCharacter2 += 5;
+        	XPositionCharacter2 += 7;
         	vectorOfCharacter2 = 1;
         }
         if(Gdx.input.isKeyPressed(Keys.UP)){
-        	YPositionCharacter2 += 5;
+        	YPositionCharacter2 += 7;
         }
         if(Gdx.input.isKeyPressed(Keys.DOWN)){
-        	YPositionCharacter2 -= 5;
+        	YPositionCharacter2 -= 7;
         }
         if(Gdx.input.isKeyPressed(Keys.M)){
         	checkShootCharacter2 = true;
@@ -135,19 +124,19 @@ public class GameScreen extends ScreenAdapter {
     
     private void updateBulletCharacter1(float delta) {
         if(vectorOfBulletCharacter1 == 1){
-        	XPositionBulletCharacter1 += 10;
+        	XPositionBulletCharacter1 += 15;
         }
         if(vectorOfBulletCharacter1 == -1){
-        	XPositionBulletCharacter1 -= 10;
+        	XPositionBulletCharacter1 -= 15;
         }
     }
    
     private void updateBulletCharacter2(float delta) {
         if(vectorOfBulletCharacter2 == 1){
-        	XPositionBulletCharacter2 += 10;
+        	XPositionBulletCharacter2 += 15;
         }
         if(vectorOfBulletCharacter2 == -1){
-        	XPositionBulletCharacter2 -= 10;
+        	XPositionBulletCharacter2 -= 15;
         }
     }
 }
