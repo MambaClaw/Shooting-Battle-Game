@@ -29,17 +29,29 @@ public class GameScreen extends ScreenAdapter {
 	
 	private ShootingGame shootingGame;
 	
-	private Texture character1Img;
+	private Texture character1RightImg;
 	 
-	private Texture character2Img;
+	private Texture character2RightImg;
+
+	private Texture character1LeftImg;
+	 
+	private Texture character2LeftImg;
+	
+	private Texture dotImg;
+	
+	private Texture backgroundImg;
 	
     public GameScreen(ShootingGame shootingGame) {
         this.shootingGame = shootingGame;
-        character1Img = new Texture("character1.png");
-        character2Img = new Texture("character2.png");
+        character1RightImg = new Texture("character1Right.png");
+        character2RightImg = new Texture("character2Right.png");
+        character1LeftImg = new Texture("character1Left.png");
+        character2LeftImg = new Texture("character2Left.png");
+        backgroundImg = new Texture("background.jpeg");
+        dotImg = new Texture("dot.png");
         XPositionCharacter1 = 100;
         YPositionCharacter1 = 100;
-        XPositionCharacter2 = 620;
+        XPositionCharacter2 = 860;
         YPositionCharacter2 = 100;
     }
     
@@ -53,13 +65,24 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         SpriteBatch batch = shootingGame.batch;
         batch.begin();
-        batch.draw(character1Img, XPositionCharacter1, YPositionCharacter1);
-        batch.draw(character2Img, XPositionCharacter2, YPositionCharacter2);
+        batch.draw(backgroundImg, 0, 0);
+        if(vectorOfCharacter1 == 1){
+        	batch.draw(character1RightImg, XPositionCharacter1, YPositionCharacter1);
+        }
+        if(vectorOfCharacter1 == -1){
+        	batch.draw(character1LeftImg, XPositionCharacter1, YPositionCharacter1);
+        }
+        if(vectorOfCharacter2 == 1){
+        	batch.draw(character2RightImg, XPositionCharacter2, YPositionCharacter2);
+        }
+        if(vectorOfCharacter2 == -1){
+        	batch.draw(character2LeftImg, XPositionCharacter2, YPositionCharacter2);
+        }
         if(checkShootCharacter1 == true){
-        	batch.draw(character2Img, XPositionBulletCharacter1, YPositionBulletCharacter1);
+        	batch.draw(dotImg, XPositionBulletCharacter1, YPositionBulletCharacter1);
         }
         if(checkShootCharacter2 == true){
-        	batch.draw(character2Img, XPositionBulletCharacter2, YPositionBulletCharacter2);
+        	batch.draw(dotImg, XPositionBulletCharacter2, YPositionBulletCharacter2);
         }
         batch.end();
     }
@@ -90,9 +113,11 @@ public class GameScreen extends ScreenAdapter {
     private void updateCharacter2(float delta) {
         if(Gdx.input.isKeyPressed(Keys.LEFT)){
         	XPositionCharacter2 -= 5;
+        	vectorOfCharacter2 = -1;
         }
         if(Gdx.input.isKeyPressed(Keys.RIGHT)){
         	XPositionCharacter2 += 5;
+        	vectorOfCharacter2 = 1;
         }
         if(Gdx.input.isKeyPressed(Keys.UP)){
         	YPositionCharacter2 += 5;
