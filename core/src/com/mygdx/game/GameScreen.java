@@ -8,16 +8,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen extends ScreenAdapter {
-	private float XPositionCharacter1;
-	private float YPositionCharacter1;
-	private float XPositionCharacter2;
-	private float YPositionCharacter2;
 	private float XPositionBulletCharacter1;
 	private float YPositionBulletCharacter1;
 	private float vectorOfBulletCharacter1;
 	private float XPositionBulletCharacter2;
 	private float YPositionBulletCharacter2;
 	private float vectorOfBulletCharacter2;
+	private float vXBulletCharacter1;
+	private float vYBulletCharacter1;
+	private float vXBulletCharacter2;
+	private float vYBulletCharacter2;
 	private int vectorOfCharacter1 = 1;
 	private int vectorOfCharacter2 = -1;// 1 = right , -1 = left
 	private boolean checkShootCharacter1 = false;
@@ -93,14 +93,11 @@ public class GameScreen extends ScreenAdapter {
         	}
         }
         
-        if(Gdx.input.isKeyPressed(Keys.S)){
-        	character1.y -= 7;
-        }
-        
         if(character1.checkJump == true){
 	        character1.vy -= g;
 	        character1.y += character1.vy;
 	        if(character1.y == 100){
+	        	character1.vy = 0;
 	        	character1.checkJump = false;
 	        }
         }
@@ -109,6 +106,8 @@ public class GameScreen extends ScreenAdapter {
         	checkShootCharacter1 = true;
         	XPositionBulletCharacter1 = character1.x;
         	YPositionBulletCharacter1 = character1.y;
+        	vXBulletCharacter1 = 4;
+        	vYBulletCharacter1 = 10 + character1.vy;
         	vectorOfBulletCharacter1 = vectorOfCharacter1;
         }
     }
@@ -148,12 +147,14 @@ public class GameScreen extends ScreenAdapter {
     
     private void updateBulletCharacter1(float delta) {
         if(vectorOfBulletCharacter1 == 1){
-        	XPositionBulletCharacter1 += 15;
+        	XPositionBulletCharacter1 += vXBulletCharacter1;
         }
         
         if(vectorOfBulletCharacter1 == -1){
-        	XPositionBulletCharacter1 -= 15;
+        	XPositionBulletCharacter1 -= vXBulletCharacter1;
         }
+        vYBulletCharacter1 -= g;
+        YPositionBulletCharacter1 += vYBulletCharacter1;
     }
    
     private void updateBulletCharacter2(float delta) {
