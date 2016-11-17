@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen extends ScreenAdapter {
-	private float XPositionBulletCharacter1;
-	private float YPositionBulletCharacter1;
+	private static float XPositionBulletCharacter1;
+	private static float YPositionBulletCharacter1;
 	private float vectorOfBulletCharacter1;
 	private float XPositionBulletCharacter2;
 	private float YPositionBulletCharacter2;
@@ -20,7 +20,7 @@ public class GameScreen extends ScreenAdapter {
 	private float vYBulletCharacter2;
 	private int vectorOfCharacter1 = 1;
 	private int vectorOfCharacter2 = -1;// 1 = right , -1 = left
-	private boolean checkShootCharacter1 = false;
+	private static boolean checkShootCharacter1 = false;
 	private boolean checkShootCharacter2 = false;
 	private ShootingGame shootingGame;
 	private Texture character1RightImg;
@@ -39,8 +39,8 @@ public class GameScreen extends ScreenAdapter {
         character1LeftImg = new Texture("character1Left.png");
         character2LeftImg = new Texture("character2Left.png");
         backgroundImg = new Texture("background.jpeg");
-        dotImg = new Texture("dot.png");
-        initCharacter(character1,character2);
+        dotImg = new Texture("bullet.png");
+        initCharacter(character1, character2);
     }
     
     @Override
@@ -49,6 +49,8 @@ public class GameScreen extends ScreenAdapter {
     	updateCharacter2(character2,delta);
     	updateBulletCharacter1(delta);
     	updateBulletCharacter2(delta);
+    	//checkBulletHitCharacter1(delta);
+    	checkBulletHitCharacter2(character2,delta);
     	Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         SpriteBatch batch = shootingGame.batch;
@@ -76,22 +78,30 @@ public class GameScreen extends ScreenAdapter {
     }
     
     private void updateCharacter1(Character character1,float delta) {
-        if(Gdx.input.isKeyPressed(Keys.A)){
+        if(Gdx.input.isKeyPressed(Keys.A) && character1.x>=0){
         	character1.x -= character1.vx;
         	character1.vector = -1;
         }
         
-        if(Gdx.input.isKeyPressed(Keys.D)){
+        if(Gdx.input.isKeyPressed(Keys.D) && character1.x<=916){
         	character1.x += character1.vx;
         	character1.vector = 1;
         }
         
         if(Gdx.input.isKeyPressed(Keys.W)){
-        	if(character1.checkJump== false){
-        		character1.vy= 10;
-            	character1.checkJump= true;
+        	if(character1.checkJump == false){
+        		character1.vy = 10;
+            	character1.checkJump = true;
         	}
+        	/*else if(character1.canDoubleJump = true){
+        		character1.vy += 10;
+        		character1.checkDoubleJump = true;
+        	}*/
         }
+        
+        /*if(!Gdx.input.isKeyPressed(Keys.W) && character1.checkJump == true){
+        	character1.canDoubleJump = true;
+        }*/
         
         if(character1.checkJump == true){
 	        character1.vy -= g;
@@ -99,16 +109,18 @@ public class GameScreen extends ScreenAdapter {
 	        if(character1.y == 100){
 	        	character1.vy = 0;
 	        	character1.checkJump = false;
+	        	character1.checkDoubleJump = false;
 	        }
         }
         
-        if(Gdx.input.isKeyPressed(Keys.C)){
+        if(Gdx.input.isKeyPressed(Keys.C) && !checkShootCharacter1){
         	checkShootCharacter1 = true;
         	XPositionBulletCharacter1 = character1.x;
         	YPositionBulletCharacter1 = character1.y;
         	vXBulletCharacter1 = 4;
         	vYBulletCharacter1 = 10 + character1.vy;
         	vectorOfBulletCharacter1 = vectorOfCharacter1;
+        	character2.bulletHit = false;
         }
     }
     private void updateCharacter2(Character character2,float delta) {
@@ -155,6 +167,9 @@ public class GameScreen extends ScreenAdapter {
         }
         vYBulletCharacter1 -= g;
         YPositionBulletCharacter1 += vYBulletCharacter1;
+        if(XPositionBulletCharacter1<0 || XPositionBulletCharacter1>960 || YPositionBulletCharacter1<0 || YPositionBulletCharacter1>640){
+        	checkShootCharacter1 = false;
+        }
     }
    
     private void updateBulletCharacter2(float delta) {
@@ -173,12 +188,19 @@ public class GameScreen extends ScreenAdapter {
     	character1.vx = 5;
     	character1.vy = 0;
     	character1.vector = 1;
-    	character1.checkJump = false;
     	character2.x = 860;
     	character2.y = 100;
     	character2.vector = -1;
     	character2.vx = 5;
     	character2.vy = 0;
-    	character2.checkJump = false;
+    }
+    
+    public static void checkBulletHitCharacter2(Character character2,float delta){
+    	if(character2.bulletHit == false && (XPositionBulletCharacter1 + 20 >= character2.x) && (XPositionBulletCharacter1 <= character2.x + 44) && (YPositionBulletCharacter1 + 20 >= character2.y) && (YPositionBulletCharacter1 <= character2.y + 60)){
+    		character2.hP -= 1;
+    		character2.bulletHit = true;
+    		checkShootCharacter1 = false;
+    		System.out.println(character2.hP);
+    	}
     }
 }
