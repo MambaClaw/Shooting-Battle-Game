@@ -113,21 +113,22 @@ public class GameScreen extends ScreenAdapter {
         	if(character1.checkJump == false){
         		character1.vy = JUMP_UP;
             	character1.checkJump = true;
+
         	}
-        	/*else if(character1.canDoubleJump = true){
-        		character1.vy += 10;
+        	else if(character1.canDoubleJump = true && character1.checkDoubleJump == false){
+        		character1.vy = JUMP_UP;
+        		character1.canDoubleJump = false;
         		character1.checkDoubleJump = true;
-        	}*/
+        	}
         }
         
-        /*if(!Gdx.input.isKeyPressed(Keys.W) && character1.checkJump == true){
-        	character1.canDoubleJump = true;
-        }*/
-        
         if(character1.checkJump == true){
-	        character1.vy -= g;
+        	character1.vy -= g;
 	        character1.y += character1.vy;
-	        if(character1.y == 100){
+	        if(character1.y > 120){
+	        	character1.canDoubleJump = true;
+	        }
+	        else if(character1.y <= 100){
 	        	character1.vy = STAND;
 	        	character1.checkJump = false;
 	        	character1.checkDoubleJump = false;
@@ -145,12 +146,12 @@ public class GameScreen extends ScreenAdapter {
         }
     }
     private void updateCharacter2(Character character2,float delta) {
-        if(Gdx.input.isKeyPressed(Keys.LEFT)){
+        if(Gdx.input.isKeyPressed(Keys.LEFT) && character2.x>=0){
         	character2.x -= character2.vx;
         	character2.vector = TURN_LEFT;
         }
         
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+        if(Gdx.input.isKeyPressed(Keys.RIGHT) && character2.x<=916){
         	character2.x += character2.vx;
         	character2.vector = TURN_RIGHT;
         }
@@ -165,7 +166,7 @@ public class GameScreen extends ScreenAdapter {
         if(character2.checkJump == true){
 	        character2.vy -= g;
 	        character2.y += character2.vy;
-	        if(character2.y == 100){
+	        if(character2.y <= 100){
 	        	character2.checkJump = false;
 	        	character2.vy = STAND;
 	        }
