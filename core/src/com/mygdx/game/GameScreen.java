@@ -8,24 +8,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen extends ScreenAdapter {
-	/*private static float XPositionBulletCharacter1;
-	private static float YPositionBulletCharacter1;
-	private float vectorOfBulletCharacter1;
-	private static float XPositionBulletCharacter2;
-	private static float YPositionBulletCharacter2;
-	private float vectorOfBulletCharacter2;
-	private float vXBulletCharacter1;
-	private float vYBulletCharacter1;
-	private float vXBulletCharacter2;
-	private float vYBulletCharacter2;*/
+	private ShootingGame shootingGame;
+	
 	private static int TURN_LEFT = -1;
 	private static int TURN_RIGHT = 1;
 	private static int JUMP_UP = 9;
 	private static int STAND = 0;
-
-	private static boolean checkShootCharacter1 = false;
-	//private static boolean checkShootCharacter2 = false;
-	private ShootingGame shootingGame;
+	private static float g = 0.25f;
+	
 	private Texture character1RightImg;
 	private Texture character2RightImg;
 	private Texture character1LeftImg;
@@ -35,7 +25,7 @@ public class GameScreen extends ScreenAdapter {
 	private Texture heartImg;
 	private Texture character1WinsImg;
 	private Texture character2WinsImg;
-	private static float g = 0.25f;
+	
 	private Character character1 = new Character();
 	private Character character2 = new Character();
 	private Bullet bulletCharacter1 = new Bullet();
@@ -117,25 +107,17 @@ public class GameScreen extends ScreenAdapter {
             	character1.checkJump = true;
 
         	}
-        	else if(character1.canDoubleJump = true && character1.checkDoubleJump == false){
-        		character1.vy = JUMP_UP;
-        		character1.canDoubleJump = false;
-        		character1.checkDoubleJump = true;
-        	}
         }
         
         if(character1.checkJump == true){
-        	character1.vy -= g;
+	        character1.vy -= g;
 	        character1.y += character1.vy;
-	        if(character1.y > 120){
-	        	character1.canDoubleJump = true;
-	        }
-	        else if(character1.y <= 100){
-	        	character1.vy = STAND;
+	        if(character1.y <= 100){
 	        	character1.checkJump = false;
-	        	character1.checkDoubleJump = false;
+	        	character1.vy = STAND;
 	        }
         }
+        
         
         if(Gdx.input.isKeyPressed(Keys.SPACE) && bulletCharacter1.checkShoot == false){
         	bulletCharacter1.checkShoot = true;

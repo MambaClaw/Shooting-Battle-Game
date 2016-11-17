@@ -5,8 +5,5 @@ public class Character {
 	public float vx = 7, vy = 0;
 	public float vector;
 	public boolean checkJump = false;
-	public int countJump = 0;
-	public boolean canDoubleJump = false;
-	public boolean checkDoubleJump = false;
 	public boolean bulletHit = false;
 }
