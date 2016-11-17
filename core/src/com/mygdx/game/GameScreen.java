@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen extends ScreenAdapter {
-	private static float XPositionBulletCharacter1;
+	/*private static float XPositionBulletCharacter1;
 	private static float YPositionBulletCharacter1;
 	private float vectorOfBulletCharacter1;
 	private static float XPositionBulletCharacter2;
@@ -17,14 +17,14 @@ public class GameScreen extends ScreenAdapter {
 	private float vXBulletCharacter1;
 	private float vYBulletCharacter1;
 	private float vXBulletCharacter2;
-	private float vYBulletCharacter2;
+	private float vYBulletCharacter2;*/
 	private static int TURN_LEFT = -1;
 	private static int TURN_RIGHT = 1;
 	private static int JUMP_UP = 9;
 	private static int STAND = 0;
 
 	private static boolean checkShootCharacter1 = false;
-	private static boolean checkShootCharacter2 = false;
+	//private static boolean checkShootCharacter2 = false;
 	private ShootingGame shootingGame;
 	private Texture character1RightImg;
 	private Texture character2RightImg;
@@ -38,6 +38,8 @@ public class GameScreen extends ScreenAdapter {
 	private static float g = 0.25f;
 	private Character character1 = new Character();
 	private Character character2 = new Character();
+	private Bullet bulletCharacter1 = new Bullet();
+	private Bullet bulletCharacter2 = new Bullet();
     public GameScreen(ShootingGame shootingGame) {
         this.shootingGame = shootingGame;
         character1RightImg = new Texture("character1Right.png");
@@ -58,8 +60,8 @@ public class GameScreen extends ScreenAdapter {
     	updateCharacter2(character2,delta);
     	updateBulletCharacter1(delta);
     	updateBulletCharacter2(delta);
-    	checkBulletHitCharacter1(character1, delta);
-    	checkBulletHitCharacter2(character2, delta);
+    	checkBulletHitCharacter1(bulletCharacter2, character1, delta);
+    	checkBulletHitCharacter2(bulletCharacter1, character2, delta);
     	Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         SpriteBatch batch = shootingGame.batch;
@@ -77,11 +79,11 @@ public class GameScreen extends ScreenAdapter {
         if(character2.vector == -1){
         	batch.draw(character2LeftImg, character2.x, character2.y);
         }
-        if(checkShootCharacter1 == true){
-        	batch.draw(bulletImg, XPositionBulletCharacter1, YPositionBulletCharacter1);
+        if(bulletCharacter1.checkShoot == true){
+        	batch.draw(bulletImg, bulletCharacter1.x, bulletCharacter1.y);
         }
-        if(checkShootCharacter2 == true){
-        	batch.draw(bulletImg, XPositionBulletCharacter2, YPositionBulletCharacter2);
+        if(bulletCharacter2.checkShoot == true){
+        	batch.draw(bulletImg, bulletCharacter2.x, bulletCharacter2.y);
         }
         for(float i = 0 ; i < character2.hP ; i++){
         	batch.draw(heartImg, 900 - i*45, 580);
@@ -135,13 +137,13 @@ public class GameScreen extends ScreenAdapter {
 	        }
         }
         
-        if(Gdx.input.isKeyPressed(Keys.SPACE) && checkShootCharacter1 == false){
-        	checkShootCharacter1 = true;
-        	XPositionBulletCharacter1 = character1.x;
-        	YPositionBulletCharacter1 = character1.y;
-        	vXBulletCharacter1 = 5;
-        	vYBulletCharacter1 = 7 + character1.vy;
-        	vectorOfBulletCharacter1 = character1.vector;
+        if(Gdx.input.isKeyPressed(Keys.SPACE) && bulletCharacter1.checkShoot == false){
+        	bulletCharacter1.checkShoot = true;
+        	bulletCharacter1.x = character1.x;
+        	bulletCharacter1.y = character1.y;
+        	bulletCharacter1.vx = 5;
+        	bulletCharacter1.vy = 7 + character1.vy;
+        	bulletCharacter1.vector = character1.vector;
         	character2.bulletHit = false;
         }
     }
@@ -172,44 +174,46 @@ public class GameScreen extends ScreenAdapter {
 	        }
         }
         
-        if(Gdx.input.isKeyPressed(Keys.ENTER) && checkShootCharacter2 == false){
-        	checkShootCharacter2 = true;
-        	XPositionBulletCharacter2 = character2.x;
-        	YPositionBulletCharacter2 = character2.y;
-        	vXBulletCharacter2 = 5;
-        	vYBulletCharacter2 = 7 + character2.vy;
-        	vectorOfBulletCharacter2 = character2.vector;
+        if(Gdx.input.isKeyPressed(Keys.ENTER) && bulletCharacter2.checkShoot == false){
+        	bulletCharacter2.checkShoot = true;
+        	bulletCharacter2.x = character2.x;
+        	bulletCharacter2.y = character2.y;
+        	bulletCharacter2.vx = 5;
+        	bulletCharacter2.vy = 7 + character2.vy;
+        	bulletCharacter2.vector = character2.vector;
         	character1.bulletHit = false;
         }
     }
     
     private void updateBulletCharacter1(float delta) {
-        if(vectorOfBulletCharacter1 == 1){
-        	XPositionBulletCharacter1 += vXBulletCharacter1;
+        if(bulletCharacter1.vector == 1){
+        	bulletCharacter1.x += bulletCharacter1.vx;
         }
         
-        if(vectorOfBulletCharacter1 == -1){
-        	XPositionBulletCharacter1 -= vXBulletCharacter1;
+        if(bulletCharacter1.vector == -1){
+        	bulletCharacter1.x -= bulletCharacter1.vx;
         }
-        vYBulletCharacter1 -= g;
-        YPositionBulletCharacter1 += vYBulletCharacter1;
-        if(XPositionBulletCharacter1<0 || XPositionBulletCharacter1>960 || YPositionBulletCharacter1<0 || YPositionBulletCharacter1>640){
-        	checkShootCharacter1 = false;
+        bulletCharacter1.vy -= g;
+        bulletCharacter1.y += bulletCharacter1.vy;
+        
+        if(bulletCharacter1.x < 0 || bulletCharacter1.x > 960 || bulletCharacter1.y < 0 || bulletCharacter1.y > 640){
+        	bulletCharacter1.checkShoot = false;
         }
     }
    
     private void updateBulletCharacter2(float delta) {
-    	if(vectorOfBulletCharacter2 == 1){
-        	XPositionBulletCharacter2 += vXBulletCharacter2;
+    	if(bulletCharacter2.vector == 1){
+    		bulletCharacter2.x += bulletCharacter2.vx;
         }
         
-        if(vectorOfBulletCharacter2 == -1){
-        	XPositionBulletCharacter2 -= vXBulletCharacter2;
+        if(bulletCharacter2.vector == -1){
+        	bulletCharacter2.x -= bulletCharacter2.vx;
         }
-        vYBulletCharacter2 -= g;
-        YPositionBulletCharacter2 += vYBulletCharacter2;
-        if(XPositionBulletCharacter2<0 || XPositionBulletCharacter2>960 || YPositionBulletCharacter2<0 || YPositionBulletCharacter2>640){
-        	checkShootCharacter2 = false;
+        bulletCharacter2.vy -= g;
+        bulletCharacter2.y += bulletCharacter2.vy;
+        
+        if(bulletCharacter2.x<0 || bulletCharacter2.x>960 || bulletCharacter2.y<0 || bulletCharacter2.y>640){
+        	bulletCharacter2.checkShoot = false;
         }
     }
     
@@ -222,19 +226,19 @@ public class GameScreen extends ScreenAdapter {
     	character2.vector = -1;
     }
     
-    public static void checkBulletHitCharacter2(Character character2,float delta){
-    	if(character2.bulletHit == false && (XPositionBulletCharacter1 + 20 >= character2.x) && (XPositionBulletCharacter1 <= character2.x + 44) && (YPositionBulletCharacter1 + 20 >= character2.y) && (YPositionBulletCharacter1 <= character2.y + 60)){
+    public static void checkBulletHitCharacter2(Bullet bulletCharacter1, Character character2,float delta){
+    	if(character2.bulletHit == false && (bulletCharacter1.x + 20 >= character2.x) && (bulletCharacter1.x <= character2.x + 44) && (bulletCharacter1.y + 20 >= character2.y) && (bulletCharacter1.y <= character2.y + 60)){
     		character2.hP -= 1;
     		character2.bulletHit = true;
-    		checkShootCharacter1 = false;
+    		bulletCharacter1.checkShoot = false;
     	}
     }
     
-    public static void checkBulletHitCharacter1(Character character1,float delta){
-    	if(character1.bulletHit == false && (XPositionBulletCharacter2 + 20 >= character1.x) && (XPositionBulletCharacter2 <= character1.x + 44) && (YPositionBulletCharacter2 + 20 >= character1.y) && (YPositionBulletCharacter2 <= character1.y + 60)){
+    public static void checkBulletHitCharacter1(Bullet bulletCharacter2, Character character1,float delta){
+    	if(character1.bulletHit == false && (bulletCharacter2.x + 20 >= character1.x) && (bulletCharacter2.x <= character1.x + 44) && (bulletCharacter2.y + 20 >= character1.y) && (bulletCharacter2.y <= character1.y + 60)){
     		character1.hP -= 1;
     		character1.bulletHit = true;
-    		checkShootCharacter2 = false;
+    		bulletCharacter2.checkShoot = false;
     	}
     }
 }

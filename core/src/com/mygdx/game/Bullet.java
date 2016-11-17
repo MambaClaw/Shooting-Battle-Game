@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 public class Bullet {
 	public float x,y;
-	public float vx,vy;
+	public float vx = 5, vy = 7;
 	public float vector;
-	public float xBulletCenter = 20;
+	public boolean checkShoot = false;
 }
