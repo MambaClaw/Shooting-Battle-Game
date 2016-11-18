@@ -238,7 +238,7 @@ public class GameScreen extends ScreenAdapter {
     	bullet.checkShoot = true;
     	bullet.x = character.x;
     	bullet.y = character.y;
-    	bullet.vx = 5;
+    	bullet.vx = 7;
     	bullet.vy = 7 + character.vy;
     	bullet.vector = character.vector;
     	anotherCharacter.bulletHit = false;
