@@ -33,9 +33,9 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(ShootingGame shootingGame) {
         this.shootingGame = shootingGame;
         character1RightImg = new Texture("character1Right.png");
-        character2RightImg = new Texture("character2Right.png");
+        character2RightImg = new Texture("Character2Right.png");
         character1LeftImg = new Texture("character1Left.png");
-        character2LeftImg = new Texture("character2Left.png");
+        character2LeftImg = new Texture("Character2Left.png");
         backgroundImg = new Texture("background.jpeg");
         bulletImg = new Texture("bullet.png");
         heartImg = new Texture("heart.png");
