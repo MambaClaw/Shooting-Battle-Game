@@ -16,15 +16,15 @@ public class GameScreen extends ScreenAdapter {
 	private static int STAND = 0;
 	private static float g = 0.25f;
 	
-	private Texture character1RightImg;
-	private Texture character2RightImg;
-	private Texture character1LeftImg;
-	private Texture character2LeftImg;
-	private Texture bulletImg;
-	private Texture backgroundImg;
-	private Texture heartImg;
-	private Texture character1WinsImg;
-	private Texture character2WinsImg;
+	private static Texture character1RightImg;
+	private static Texture character2RightImg;
+	private static Texture character1LeftImg;
+	private static Texture character2LeftImg;
+	private static Texture bulletImg;
+	private static Texture backgroundImg;
+	private static Texture heartImg;
+	private static Texture character1WinsImg;
+	private static Texture character2WinsImg;
 	
 	private Character character1 = new Character();
 	private Character character2 = new Character();
@@ -57,36 +57,13 @@ public class GameScreen extends ScreenAdapter {
         SpriteBatch batch = shootingGame.batch;
         batch.begin();
         batch.draw(backgroundImg, 0, 0);
-        if(character1.vector == 1){
-        	batch.draw(character1RightImg, character1.x, character1.y);
-        }
-        if(character1.vector == -1){
-        	batch.draw(character1LeftImg, character1.x, character1.y);
-        }
-        if(character2.vector == 1){
-        	batch.draw(character2RightImg, character2.x, character2.y);
-        }
-        if(character2.vector == -1){
-        	batch.draw(character2LeftImg, character2.x, character2.y);
-        }
-        if(bulletCharacter1.checkShoot == true){
-        	batch.draw(bulletImg, bulletCharacter1.x, bulletCharacter1.y);
-        }
-        if(bulletCharacter2.checkShoot == true){
-        	batch.draw(bulletImg, bulletCharacter2.x, bulletCharacter2.y);
-        }
-        for(float i = 0 ; i < character2.hP ; i++){
-        	batch.draw(heartImg, 900 - i*45, 580);
-        }
-        for(float i = 0 ; i < character1.hP ; i++){
-        	batch.draw(heartImg, 20 + i*45, 580);
-        }
-        if(character1.hP <= 0){
-        	batch.draw(character2WinsImg, 0, 0);
-        }
-        if(character2.hP <= 0){
-        	batch.draw(character1WinsImg, 0, 0);
-        }
+        drawCharacter1(character1, batch);
+        drawCharacter2(character2, batch);
+        drawBullet(bulletCharacter1, batch);
+        drawBullet(bulletCharacter2, batch);
+        drawHPCharacter1(character1, batch);
+        drawHPCharacter2(character2, batch);
+        checkGameOver(character1, character2, batch);
         batch.end();
     }
     
@@ -120,13 +97,7 @@ public class GameScreen extends ScreenAdapter {
         
         
         if(Gdx.input.isKeyPressed(Keys.SPACE) && bulletCharacter1.checkShoot == false){
-        	bulletCharacter1.checkShoot = true;
-        	bulletCharacter1.x = character1.x;
-        	bulletCharacter1.y = character1.y;
-        	bulletCharacter1.vx = 5;
-        	bulletCharacter1.vy = 7 + character1.vy;
-        	bulletCharacter1.vector = character1.vector;
-        	character2.bulletHit = false;
+        	shoot(character1, character2, bulletCharacter1);
         }
     }
     private void updateCharacter2(Character character2,float delta) {
@@ -157,13 +128,7 @@ public class GameScreen extends ScreenAdapter {
         }
         
         if(Gdx.input.isKeyPressed(Keys.ENTER) && bulletCharacter2.checkShoot == false){
-        	bulletCharacter2.checkShoot = true;
-        	bulletCharacter2.x = character2.x;
-        	bulletCharacter2.y = character2.y;
-        	bulletCharacter2.vx = 5;
-        	bulletCharacter2.vy = 7 + character2.vy;
-        	bulletCharacter2.vector = character2.vector;
-        	character1.bulletHit = false;
+        	shoot(character2, character1, bulletCharacter2);
         }
     }
     
@@ -222,5 +187,60 @@ public class GameScreen extends ScreenAdapter {
     		character1.bulletHit = true;
     		bulletCharacter2.checkShoot = false;
     	}
+    }
+    
+    public static void drawCharacter1(Character character1, SpriteBatch batch){
+    	if(character1.vector == 1){
+        	batch.draw(character1RightImg, character1.x, character1.y);
+        }
+        if(character1.vector == -1){
+        	batch.draw(character1LeftImg, character1.x, character1.y);
+        }
+    }
+    
+    public static void drawCharacter2(Character character2, SpriteBatch batch){
+    	if(character2.vector == 1){
+        	batch.draw(character2RightImg, character2.x, character2.y);
+        }
+        if(character2.vector == -1){
+        	batch.draw(character2LeftImg, character2.x, character2.y);
+        }
+    }
+    
+    public static void drawBullet(Bullet bullet, SpriteBatch batch){
+    	if(bullet.checkShoot == true){
+        	batch.draw(bulletImg, bullet.x, bullet.y);
+        }
+    }
+    
+    public static void drawHPCharacter2(Character character2, SpriteBatch batch){
+    	for(float i = 0 ; i < character2.hP ; i++){
+        	batch.draw(heartImg, 900 - i*45, 580);
+        }
+    }
+    
+    public static void drawHPCharacter1(Character character1, SpriteBatch batch){
+    	for(float i = 0 ; i < character1.hP ; i++){
+        	batch.draw(heartImg, 20 + i*45, 580);
+        }
+    }
+    
+    public static void checkGameOver(Character character1, Character character2, SpriteBatch batch){
+    	if(character1.hP <= 0){
+        	batch.draw(character2WinsImg, 0, 0);
+        }
+        if(character2.hP <= 0){
+        	batch.draw(character1WinsImg, 0, 0);
+        }
+    }
+    
+    public static void shoot(Character character, Character anotherCharacter, Bullet bullet){
+    	bullet.checkShoot = true;
+    	bullet.x = character.x;
+    	bullet.y = character.y;
+    	bullet.vx = 5;
+    	bullet.vy = 7 + character.vy;
+    	bullet.vector = character.vector;
+    	anotherCharacter.bulletHit = false;
     }
 }
