@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen extends ScreenAdapter {
 	private ShootingGame shootingGame;
-	
 	private static Texture character1RightImg;
 	private static Texture character1LeftImg;
 	private static Texture character2RightImg;
