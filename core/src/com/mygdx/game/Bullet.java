@@ -25,19 +25,11 @@ public class Bullet {
 
     }
 	
-	public static void checkBulletHitCharacter1(Bullet bulletCharacter2, Character character1,float delta){
-    	if(character1.bulletHit == false && (bulletCharacter2.x + 20 >= character1.x) && (bulletCharacter2.x <= character1.x + 44) && (bulletCharacter2.y + 20 >= character1.y) && (bulletCharacter2.y <= character1.y + 60)){
-    		character1.hP -= 1;
-    		character1.bulletHit = true;
-    		bulletCharacter2.checkShoot = false;
-    	}
-    }
-	
-    public static void checkBulletHitCharacter2(Bullet bulletCharacter1, Character character2,float delta){
-    	if(character2.bulletHit == false && (bulletCharacter1.x + 20 >= character2.x) && (bulletCharacter1.x <= character2.x + 44) && (bulletCharacter1.y + 20 >= character2.y) && (bulletCharacter1.y <= character2.y + 60)){
-    		character2.hP -= 1;
-    		character2.bulletHit = true;
-    		bulletCharacter1.checkShoot = false;
+	public static void checkBulletHitCharacter(Bullet bullet, Character anotherCharacter,float delta){
+    	if(anotherCharacter.bulletHit == false && (bullet.x + 20 >= anotherCharacter.x) && (bullet.x <= anotherCharacter.x + 44) && (bullet.y + 20 >= anotherCharacter.y) && (bullet.y <= anotherCharacter.y + 60)){
+    		anotherCharacter.hP -= 1;
+    		anotherCharacter.bulletHit = true;
+    		bullet.checkShoot = false;
     	}
     }
     
