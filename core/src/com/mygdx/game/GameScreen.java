@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,11 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameScreen extends ScreenAdapter {
 	private ShootingGame shootingGame;
 	
-	private static int TURN_LEFT = -1;
-	private static int TURN_RIGHT = 1;
-	private static int JUMP_UP = 9;
-	private static int STAND = 0;
-	private static float g = 0.25f;
+
 	
 	private static Texture character1RightImg;
 	private static Texture character2RightImg;
@@ -26,10 +21,11 @@ public class GameScreen extends ScreenAdapter {
 	private static Texture character1WinsImg;
 	private static Texture character2WinsImg;
 	
-	private Character character1 = new Character();
-	private Character character2 = new Character();
-	private Bullet bulletCharacter1 = new Bullet();
-	private Bullet bulletCharacter2 = new Bullet();
+	public static Character character1 = new Character();
+	public static Character character2 = new Character();
+	public static Bullet bulletCharacter1 = new Bullet();
+	public static Bullet bulletCharacter2 = new Bullet();
+	
     public GameScreen(ShootingGame shootingGame) {
         this.shootingGame = shootingGame;
         character1RightImg = new Texture("character1Right.png");
@@ -41,13 +37,13 @@ public class GameScreen extends ScreenAdapter {
         heartImg = new Texture("heart.png");
         character1WinsImg = new Texture("Character1Wins.png");
         character2WinsImg = new Texture("Character2Wins.png");
-        initCharacter(character1, character2);
+        Character.initCharacter(character1, character2);
     }
     
     @Override
     public void render(float delta) {
-    	updateCharacter1(character1,delta);
-    	updateCharacter2(character2,delta);
+    	character1.updateCharacter1(delta);
+    	character2.updateCharacter2(delta);
         bulletCharacter1.updateBullet(delta);
         bulletCharacter2.updateBullet(delta);
     	checkBulletHitCharacter1(bulletCharacter2, character1, delta);
@@ -63,83 +59,13 @@ public class GameScreen extends ScreenAdapter {
         drawBullet(bulletCharacter2, batch);
         drawHPCharacter1(character1, batch);
         drawHPCharacter2(character2, batch);
-        checkGameOver(character1, character2, batch);
+        gameOverScene(character1, character2, batch);
         batch.end();
     }
     
-    private void updateCharacter1(Character character1,float delta) {
-        if(Gdx.input.isKeyPressed(Keys.A) && character1.x>=0){
-        	character1.x -= character1.vx;
-        	character1.vector = TURN_LEFT;
-        }
-        
-        if(Gdx.input.isKeyPressed(Keys.D) && character1.x<=916){
-        	character1.x += character1.vx;
-        	character1.vector = TURN_RIGHT;
-        }
-        
-        if(Gdx.input.isKeyPressed(Keys.W)){
-        	if(character1.checkJump == false){
-        		character1.vy = JUMP_UP;
-            	character1.checkJump = true;
-
-        	}
-        }
-        
-        if(character1.checkJump == true){
-	        character1.vy -= g;
-	        character1.y += character1.vy;
-	        if(character1.y <= 100){
-	        	character1.checkJump = false;
-	        	character1.vy = STAND;
-	        }
-        }
-        
-        
-        if(Gdx.input.isKeyPressed(Keys.SPACE) && bulletCharacter1.checkShoot == false){
-        	shoot(character1, character2, bulletCharacter1);
-        }
-    }
-    private void updateCharacter2(Character character2,float delta) {
-        if(Gdx.input.isKeyPressed(Keys.LEFT) && character2.x>=0){
-        	character2.x -= character2.vx;
-        	character2.vector = TURN_LEFT;
-        }
-        
-        if(Gdx.input.isKeyPressed(Keys.RIGHT) && character2.x<=916){
-        	character2.x += character2.vx;
-        	character2.vector = TURN_RIGHT;
-        }
-        
-        if(Gdx.input.isKeyPressed(Keys.UP)){
-        	if(character2.checkJump == false){
-        		character2.vy = JUMP_UP;
-            	character2.checkJump= true;
-        	}
-        }
-        
-        if(character2.checkJump == true){
-	        character2.vy -= g;
-	        character2.y += character2.vy;
-	        if(character2.y <= 100){
-	        	character2.checkJump = false;
-	        	character2.vy = STAND;
-	        }
-        }
-        
-        if(Gdx.input.isKeyPressed(Keys.ENTER) && bulletCharacter2.checkShoot == false){
-        	shoot(character2, character1, bulletCharacter2);
-        }
-    }
+   
     
-    public static void initCharacter(Character character1, Character character2){
-    	character1.x = 100;
-    	character1.y = 100;
-    	character1.vector = 1;
-    	character2.x = 860;
-    	character2.y = 100;
-    	character2.vector = -1;
-    }
+  
     
     public static void checkBulletHitCharacter2(Bullet bulletCharacter1, Character character2,float delta){
     	if(character2.bulletHit == false && (bulletCharacter1.x + 20 >= character2.x) && (bulletCharacter1.x <= character2.x + 44) && (bulletCharacter1.y + 20 >= character2.y) && (bulletCharacter1.y <= character2.y + 60)){
@@ -193,7 +119,7 @@ public class GameScreen extends ScreenAdapter {
         }
     }
     
-    public static void checkGameOver(Character character1, Character character2, SpriteBatch batch){
+    public static void gameOverScene(Character character1, Character character2, SpriteBatch batch){
     	if(character1.hP <= 0){
         	batch.draw(character2WinsImg, 0, 0);
         }
@@ -202,13 +128,4 @@ public class GameScreen extends ScreenAdapter {
         }
     }
     
-    public static void shoot(Character character, Character anotherCharacter, Bullet bullet){
-    	bullet.checkShoot = true;
-    	bullet.x = character.x;
-    	bullet.y = character.y;
-    	bullet.vx = 7;
-    	bullet.vy = 7 + character.vy;
-    	bullet.vector = character.vector;
-    	anotherCharacter.bulletHit = false;
-    }
 }
