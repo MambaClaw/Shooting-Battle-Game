@@ -48,8 +48,8 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
     	updateCharacter1(character1,delta);
     	updateCharacter2(character2,delta);
-    	updateBulletCharacter1(delta);
-    	updateBulletCharacter2(delta);
+        bulletCharacter1.updateBullet(delta);
+        bulletCharacter2.updateBullet(delta);
     	checkBulletHitCharacter1(bulletCharacter2, character1, delta);
     	checkBulletHitCharacter2(bulletCharacter1, character2, delta);
     	Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -129,38 +129,6 @@ public class GameScreen extends ScreenAdapter {
         
         if(Gdx.input.isKeyPressed(Keys.ENTER) && bulletCharacter2.checkShoot == false){
         	shoot(character2, character1, bulletCharacter2);
-        }
-    }
-    
-    private void updateBulletCharacter1(float delta) {
-        if(bulletCharacter1.vector == 1){
-        	bulletCharacter1.x += bulletCharacter1.vx;
-        }
-        
-        if(bulletCharacter1.vector == -1){
-        	bulletCharacter1.x -= bulletCharacter1.vx;
-        }
-        bulletCharacter1.vy -= g;
-        bulletCharacter1.y += bulletCharacter1.vy;
-        
-        if(bulletCharacter1.x < 0 || bulletCharacter1.x > 960 || bulletCharacter1.y < 0 || bulletCharacter1.y > 640){
-        	bulletCharacter1.checkShoot = false;
-        }
-    }
-   
-    private void updateBulletCharacter2(float delta) {
-    	if(bulletCharacter2.vector == 1){
-    		bulletCharacter2.x += bulletCharacter2.vx;
-        }
-        
-        if(bulletCharacter2.vector == -1){
-        	bulletCharacter2.x -= bulletCharacter2.vx;
-        }
-        bulletCharacter2.vy -= g;
-        bulletCharacter2.y += bulletCharacter2.vy;
-        
-        if(bulletCharacter2.x<0 || bulletCharacter2.x>960 || bulletCharacter2.y<0 || bulletCharacter2.y>640){
-        	bulletCharacter2.checkShoot = false;
         }
     }
     
