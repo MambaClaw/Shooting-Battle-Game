@@ -24,15 +24,7 @@ public class GameScreen extends ScreenAdapter {
 
 	public GameScreen(ShootingGame shootingGame) {
 		this.shootingGame = shootingGame;
-		character1RightImg = new Texture("character1Right.png");
-		character2RightImg = new Texture("Character2Right.png");
-		character1LeftImg = new Texture("character1Left.png");
-		character2LeftImg = new Texture("Character2Left.png");
-		backgroundImg = new Texture("background.jpeg");
-		bulletImg = new Texture("bullet.png");
-		heartImg = new Texture("heart.png");
-		character1WinsImg = new Texture("Character1Wins.png");
-		character2WinsImg = new Texture("Character2Wins.png");
+		setImage();
 		Character.initCharacter(character1, character2);
 	}
 
@@ -113,5 +105,17 @@ public class GameScreen extends ScreenAdapter {
 		drawHPCharacter2(character2, batch);
 		gameOverScene(character1, character2, batch);
 		batch.end();
+	}
+	
+	public static void setImage(){
+		character1RightImg = new Texture("character1Right.png");
+		character2RightImg = new Texture("Character2Right.png");
+		character1LeftImg = new Texture("character1Left.png");
+		character2LeftImg = new Texture("Character2Left.png");
+		backgroundImg = new Texture("background.jpeg");
+		bulletImg = new Texture("bullet.png");
+		heartImg = new Texture("heart.png");
+		character1WinsImg = new Texture("Character1Wins.png");
+		character2WinsImg = new Texture("Character2Wins.png");
 	}
 }
