@@ -3,16 +3,18 @@ package com.mygdx.game;
 public class Bullet {
 	public float x,y;
 	public float vx = 5, vy = 7;
-	public float vector;
-	public float g = 0.25f;
+	public int vector;
+	public final float g = 0.25f;
+	public static final int RIGHT = 1;
+	public static final int LEFT = -1;
 	public boolean checkShoot = false;
 	
 	public void updateBullet(float delta){
-        if(this.vector == 1){
+        if(this.vector == RIGHT){
         	this.x += this.vx;
         }
         
-        if(this.vector == -1){
+        if(this.vector == LEFT){
         	this.x -= this.vx;
         }
         this.vy -= g;

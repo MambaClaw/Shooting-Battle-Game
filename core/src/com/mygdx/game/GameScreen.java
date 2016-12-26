@@ -21,9 +21,11 @@ public class GameScreen extends ScreenAdapter {
 	public static Character character2 = new Character();
 	public static Bullet bulletCharacter1 = new Bullet();
 	public static Bullet bulletCharacter2 = new Bullet();
-	public static float GAME_WIDTH = 960;
-	public static float GAME_HEIGHT = 640;
-	public static float SIZE_OF_HEART_IMAGE = 60;
+	public static final float GAME_WIDTH = 960;
+	public static final float GAME_HEIGHT = 640;
+	public static final float SIZE_OF_HEART_IMAGE = 60;
+	public static final int RIGHT = 1;
+	public static final int LEFT = -1; 
 
 	public GameScreen(ShootingGame shootingGame) {
 		this.shootingGame = shootingGame;
@@ -39,21 +41,21 @@ public class GameScreen extends ScreenAdapter {
 	}
 
 	public static void drawCharacter1(Character character1, SpriteBatch batch) {
-		if (character1.vector == 1) {
+		if (character1.vector == RIGHT) {
 			batch.draw(character1RightImg, character1.x, character1.y);
 		}
 
-		if (character1.vector == -1) {
+		if (character1.vector == LEFT) {
 			batch.draw(character1LeftImg, character1.x, character1.y);
 		}
 	}
 
 	public static void drawCharacter2(Character character2, SpriteBatch batch) {
-		if (character2.vector == 1) {
+		if (character2.vector == RIGHT) {
 			batch.draw(character2RightImg, character2.x, character2.y);
 		}
 
-		if (character2.vector == -1) {
+		if (character2.vector == LEFT) {
 			batch.draw(character2LeftImg, character2.x, character2.y);
 		}
 	}

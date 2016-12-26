@@ -7,30 +7,32 @@ public class Character {
 	public int hP = 7;
 	public float x, y;
 	public float vx = 7, vy = 0;
-	public float vector;
+	public int vector;
 	public boolean checkJump = false;
 	public boolean bulletHit = false;
-	private static int TURN_LEFT = -1;
-	private static int TURN_RIGHT = 1;
-	private static int JUMP_UP = 9;
-	private static int STAND = 0;
-	private static float g = 0.25f;
-	private static float SIZE_OF_CHARACTER_IMAGE = 44;
+	private static final int LEFT = -1;
+	private static final int RIGHT = 1;
+	private static final int JUMP = 9;
+	private static final int STAND = 0;
+	private static final float g = 0.25f;
+	private static final float FLOOR = 100;
+	private static final float SIZE_OF_CHARACTER_IMAGE = 44;
+	
 
 	void updateCharacter1(float delta) {
 		if (Gdx.input.isKeyPressed(Keys.A) && this.x >= 0) {
 			this.x -= this.vx;
-			this.vector = TURN_LEFT;
+			this.vector = LEFT;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.D) && this.x <= GameScreen.GAME_WIDTH - this.SIZE_OF_CHARACTER_IMAGE) {
 			this.x += this.vx;
-			this.vector = TURN_RIGHT;
+			this.vector = RIGHT;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.W)) {
 			if (this.checkJump == false) {
-				this.vy = JUMP_UP;
+				this.vy = JUMP;
 				this.checkJump = true;
 
 			}
@@ -39,7 +41,7 @@ public class Character {
 		if (this.checkJump == true) {
 			this.vy -= g;
 			this.y += this.vy;
-			if (this.y <= 100) {
+			if (this.y <= FLOOR) {
 				this.checkJump = false;
 
 				this.vy = STAND;
@@ -56,17 +58,17 @@ public class Character {
 
 		if (Gdx.input.isKeyPressed(Keys.LEFT) && this.x >= 0) {
 			this.x -= this.vx;
-			this.vector = TURN_LEFT;
+			this.vector = LEFT;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT) && this.x <= GameScreen.GAME_WIDTH - this.SIZE_OF_CHARACTER_IMAGE) {
 			this.x += this.vx;
-			this.vector = TURN_RIGHT;
+			this.vector = RIGHT;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			if (this.checkJump == false) {
-				this.vy = JUMP_UP;
+				this.vy = JUMP;
 				this.checkJump = true;
 			}
 		}
@@ -74,7 +76,7 @@ public class Character {
 		if (this.checkJump == true) {
 			this.vy -= g;
 			this.y += this.vy;
-			if (this.y <= 100) {
+			if (this.y <= FLOOR) {
 				this.checkJump = false;
 				this.vy = STAND;
 			}
@@ -98,10 +100,10 @@ public class Character {
 	public static void initCharacter(Character character1, Character character2) {
 		character1.x = 100;
 		character1.y = 100;
-		character1.vector = 1;
+		character1.vector = RIGHT;
 		character2.x = 860;
 		character2.y = 100;
-		character2.vector = -1;
+		character2.vector = LEFT;
 	}
 
 }
