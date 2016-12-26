@@ -15,6 +15,7 @@ public class Character {
 	private static int JUMP_UP = 9;
 	private static int STAND = 0;
 	private static float g = 0.25f;
+	private static float SIZE_OF_CHARACTER_IMAGE = 44;
 
 	void updateCharacter1(float delta) {
 		if (Gdx.input.isKeyPressed(Keys.A) && this.x >= 0) {
@@ -22,7 +23,7 @@ public class Character {
 			this.vector = TURN_LEFT;
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.D) && this.x <= 916) {
+		if (Gdx.input.isKeyPressed(Keys.D) && this.x <= GameScreen.GAME_WIDTH - this.SIZE_OF_CHARACTER_IMAGE) {
 			this.x += this.vx;
 			this.vector = TURN_RIGHT;
 		}
@@ -58,7 +59,7 @@ public class Character {
 			this.vector = TURN_LEFT;
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.RIGHT) && this.x <= 916) {
+		if (Gdx.input.isKeyPressed(Keys.RIGHT) && this.x <= GameScreen.GAME_WIDTH - this.SIZE_OF_CHARACTER_IMAGE) {
 			this.x += this.vx;
 			this.vector = TURN_RIGHT;
 		}

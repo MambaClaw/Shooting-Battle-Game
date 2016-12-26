@@ -7,7 +7,6 @@ public class Bullet {
 	public float g = 0.25f;
 	public boolean checkShoot = false;
 	
-	
 	public void updateBullet(float delta){
         if(this.vector == 1){
         	this.x += this.vx;
@@ -19,7 +18,7 @@ public class Bullet {
         this.vy -= g;
         this.y += this.vy;
         
-        if(this.x < 0 || this.x > 960 || this.y < 0 || this.y > 640){
+        if(this.x < 0 || this.x > GameScreen.GAME_WIDTH || this.y < 0 || this.y > GameScreen.GAME_HEIGHT){
         	this.checkShoot = false;
         }
 

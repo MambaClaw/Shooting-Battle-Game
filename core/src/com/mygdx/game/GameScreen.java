@@ -21,6 +21,9 @@ public class GameScreen extends ScreenAdapter {
 	public static Character character2 = new Character();
 	public static Bullet bulletCharacter1 = new Bullet();
 	public static Bullet bulletCharacter2 = new Bullet();
+	public static float GAME_WIDTH = 960;
+	public static float GAME_HEIGHT = 640;
+	public static float SIZE_OF_HEART_IMAGE = 60;
 
 	public GameScreen(ShootingGame shootingGame) {
 		this.shootingGame = shootingGame;
@@ -63,13 +66,13 @@ public class GameScreen extends ScreenAdapter {
 
 	public static void drawHPCharacter2(Character character2, SpriteBatch batch) {
 		for (float i = 0; i < character2.hP; i++) {
-			batch.draw(heartImg, 900 - i * 45, 580);
+			batch.draw(heartImg, GAME_WIDTH - SIZE_OF_HEART_IMAGE - i * 45, GAME_HEIGHT - SIZE_OF_HEART_IMAGE);
 		}
 	}
 
 	public static void drawHPCharacter1(Character character1, SpriteBatch batch) {
 		for (float i = 0; i < character1.hP; i++) {
-			batch.draw(heartImg, 20 + i * 45, 580);
+			batch.draw(heartImg, 20 + i * 45, GAME_HEIGHT - SIZE_OF_HEART_IMAGE);
 		}
 	}
 
